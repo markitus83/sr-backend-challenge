@@ -48,5 +48,6 @@ Example 3: Buy Water without exact change
 * Since the context is limited to technical testing, Gitflow will not be used as the development workflow. In another context, we would use a Master branch along with other branches for features, as well as using PullRequest for each commit that needs to be moved to Master.
 
 # Requirements
+* Docker + Docker Compose
 
 # Instructions
