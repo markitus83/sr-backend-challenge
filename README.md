@@ -51,3 +51,7 @@ Example 3: Buy Water without exact change
 * Docker + Docker Compose
 
 # Instructions
+* Install dependencies:
+    ```
+    docker compose run --rm php composer install
+    ```
