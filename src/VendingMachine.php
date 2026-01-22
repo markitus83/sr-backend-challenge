@@ -8,6 +8,7 @@ final class VendingMachine
     private int $credit = 0;
     private array $insertedCoins = [];
     private array $prices = ['WATER' => 65, 'JUICE' => 100, 'SODA' => 150];
+    private array $stock = ['WATER' => 10, 'JUICE' => 6, 'SODA' => 4];
 
     private function __construct()
     {
@@ -22,8 +23,6 @@ final class VendingMachine
     {
         $this->credit += $coin;
         $this->insertedCoins[] = $coin;
-
-        echo json_encode($this->insertedCoins);
 
         return [];
     }
@@ -43,6 +42,10 @@ final class VendingMachine
 
     public function selectItem(string $item): array
     {
+        if (($this->stock[$item] ?? 0) <= 0) {
+            return [];
+        }
+
         if (!isset($this->prices[$item])) {
             return [];
         }
@@ -56,6 +59,7 @@ final class VendingMachine
             $response[] = $this->formatCoin($coin);
         }
 
+        $this->stock[$item]--;
         $this->credit = 0;
         $this->insertedCoins = [];
 
@@ -74,6 +78,11 @@ final class VendingMachine
         }
 
         return $coins;
+    }
+
+    public function setStock(string $item, int $stock): void
+    {
+        $this->stock[$item] = $stock;
     }
 
     private function formatCoin(int $coin): string

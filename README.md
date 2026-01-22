@@ -47,6 +47,11 @@ Example 3: Buy Water without exact change
 * Docker will be used to create and run the environment of the solution
 * Since the context is limited to technical testing, Gitflow will not be used as the development workflow. In another context, we would use a Master branch along with other branches for features, as well as using PullRequest for each commit that needs to be moved to Master.
 
+# Application Considerations
+* If item is out of stock:
+  * It's not for sale
+  * Money isn't automatically refunded (use RETURN-COIN)
+
 # Requirements
 * Docker + Docker Compose
 

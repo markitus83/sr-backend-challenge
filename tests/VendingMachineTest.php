@@ -36,4 +36,15 @@ final class VendingMachineTest extends TestCase
 
         $this->assertSame(['WATER', '0.25', '0.10'], $machine->selectItem('WATER'));
     }
+
+    public function test_cannot_buy_item_if_out_of_stock()
+    {
+        $machine = VendingMachine::default();
+
+        $machine->setStock('JUICE', 0);
+
+        $machine->insertCoin(100);
+
+        $this->assertSame([], $machine->selectItem('JUICE'));
+    }
 }
