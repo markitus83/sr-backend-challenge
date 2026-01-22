@@ -59,3 +59,7 @@ Example 3: Buy Water without exact change
   ```
   docker compose run --rm php php bin/run.php 
   ```
+* Run tests:
+  ```
+  docker compose run --rm php vendor/bin/phpunit 
+  ```
