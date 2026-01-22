@@ -23,6 +23,8 @@ final class VendingMachine
         $this->credit += $coin;
         $this->insertedCoins[] = $coin;
 
+        echo json_encode($this->insertedCoins);
+
         return [];
     }
 
@@ -54,6 +56,9 @@ final class VendingMachine
             $response[] = $this->formatCoin($coin);
         }
 
+        $this->credit = 0;
+        $this->insertedCoins = [];
+
         return $response;
     }
 
@@ -77,7 +82,7 @@ final class VendingMachine
                 5 => '0.05',
                 10 => '0.10',
                 25 => '0.25',
-                100 => '1.005'
+                100 => '1.00'
             };
     }
 }
