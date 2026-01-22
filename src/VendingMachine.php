@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 namespace App;
+
 final class VendingMachine
 {
     private int $credit = 0;
     private array $insertedCoins = [];
     private array $prices = ['WATER' => 65, 'JUICE' => 100, 'SODA' => 150];
     private array $stock = ['WATER' => 10, 'JUICE' => 6, 'SODA' => 4];
+    private array $change = [25 => 0, 10 => 0, 5 => 0];
 
     private function __construct()
     {
@@ -16,13 +18,20 @@ final class VendingMachine
 
     public static function default(): self
     {
-        return new self();
+        $self = new self();
+
+        $self->change = [25 => 20, 10 => 20, 5 => 20];
+
+        return $self;
     }
 
     public function insertCoin(int $coin): array
     {
         $this->credit += $coin;
         $this->insertedCoins[] = $coin;
+        if (isset($this->change[$coin])) {
+            $this->change[$coin]++;
+        }
 
         return [];
     }
@@ -52,6 +61,11 @@ final class VendingMachine
 
         $price = $this->prices[$item];
         $change = $this->credit - $price;
+        $changeCoins = $this->calculateChange($change);
+
+        if (empty($changeCoins)) {
+            return [];
+        }
 
         $response = [$item];
 
@@ -69,10 +83,12 @@ final class VendingMachine
     private function calculateChange(int $amount): array
     {
         $coins = [];
+        $availableChange = $this->change;
 
         foreach ([25, 10, 5] as $coin) {
-            while ($amount >= $coin) {
+            while ($amount >= $coin && ($availableChange[$coin] ?? 0) > 0) {
                 $coins[] = $coin;
+                $availableChange[$coin]--;
                 $amount -= $coin;
             }
         }
@@ -83,6 +99,11 @@ final class VendingMachine
     public function setStock(string $item, int $stock): void
     {
         $this->stock[$item] = $stock;
+    }
+
+    public function setChange(int $coin, int $amount): void
+    {
+        $this->change[$coin] = $amount;
     }
 
     private function formatCoin(int $coin): string

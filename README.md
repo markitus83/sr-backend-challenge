@@ -18,7 +18,7 @@ You must have at least have 3 primary items that cost 0.65, 1.00, and 1.50. Also
 ### Valid set of responses on the vending machine are:
 
 * 0.05, 0.10, 0.25 - return coin
-* Water,  Juice, Soda - vend item
+* Water, Juice, Soda - vend item
 
 ### Vending machine must track the following state:
 
@@ -51,6 +51,11 @@ Example 3: Buy Water without exact change
 * If item is out of stock:
   * It's not for sale
   * Money isn't automatically refunded (use RETURN-COIN)
+* Available change:
+  * Check how many coins are in the machine
+  * If we are trying to buy but machine don't have the exact change, sale willn't be finished
+  * Inserting coins increases the available change
+  * Apply convention of return coins (only 0.25, 0.10, 0.05)
 
 # Requirements
 * Docker + Docker Compose

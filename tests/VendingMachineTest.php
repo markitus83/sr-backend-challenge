@@ -47,4 +47,17 @@ final class VendingMachineTest extends TestCase
 
         $this->assertSame([], $machine->selectItem('JUICE'));
     }
+
+    public function test_not_vend_if_not_available_change()
+    {
+        $machine = VendingMachine::default();
+
+        $machine->setChange(25, 0);
+        $machine->setChange(10, 0);
+        $machine->setChange(5, 0);
+
+        $machine->insertCoin(100);
+
+        $this->assertSame([], $machine->selectItem('WATER'));
+    }
 }

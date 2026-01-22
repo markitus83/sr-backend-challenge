@@ -1,6 +1,6 @@
 {
   "name": "vending-machine/app",
-  "description": "Vending machine kata",
+  "description": "Vending machine challenge",
   "type": "project",
   "require": {
     "php": "^8.1"

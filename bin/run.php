@@ -72,7 +72,6 @@ while (true) {
         }
         if ($item === 'GET-SODA') {
             $response = array_merge($response, $vendingMachine->selectItem('SODA'));
-            continue;
         }
     }
 
