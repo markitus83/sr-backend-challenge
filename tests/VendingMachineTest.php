@@ -60,4 +60,18 @@ final class VendingMachineTest extends TestCase
 
         $this->assertSame([], $machine->selectItem('WATER'));
     }
+
+    public function test_service_sets_change_and_stock(): void
+    {
+        $machine = VendingMachine::default();
+
+        $machine->service(
+            [25 => 0, 10 => 0, 5 => 0],
+            ['WATER' => 1],
+        );
+
+        $machine->insertCoin(100);
+
+        $this->assertSame([], $machine->selectItem('WATER'));
+    }
 }

@@ -56,6 +56,8 @@ Example 3: Buy Water without exact change
   * If we are trying to buy but machine don't have the exact change, sale willn't be finished
   * Inserting coins increases the available change
   * Apply convention of return coins (only 0.25, 0.10, 0.05)
+* Service:
+  * Apply convention of purpose of this action, set the available change and the stock of each item
 
 # Requirements
 * Docker + Docker Compose

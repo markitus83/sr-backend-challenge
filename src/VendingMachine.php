@@ -106,6 +106,17 @@ final class VendingMachine
         $this->change[$coin] = $amount;
     }
 
+    public function service(array $change, array $stock): void
+    {
+        foreach ($change as $coin => $amount) {
+            $this->setChange($coin, $amount);
+        }
+
+        foreach ($stock as $item => $count) {
+            $this->setStock($item, $count);
+        }
+    }
+
     private function formatCoin(int $coin): string
     {
             return match($coin) {
