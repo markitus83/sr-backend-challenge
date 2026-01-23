@@ -75,3 +75,7 @@ Example 3: Buy Water without exact change
   ```
   docker compose run --rm php vendor/bin/phpunit 
   ```
+
+## References
+* PHP official documentation (CLI usage, feature and exception handling)
+* PHPUnit documentation and basic TDD practices
