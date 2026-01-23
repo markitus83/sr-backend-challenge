@@ -63,7 +63,7 @@ final class VendingMachine
         $change = $this->credit - $price;
         $changeCoins = $this->calculateChange($change);
 
-        if (empty($changeCoins)) {
+        if ($change > 0 && empty($changeCoins)) {
             return [];
         }
 
