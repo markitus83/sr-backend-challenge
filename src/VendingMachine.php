@@ -51,6 +51,10 @@ final class VendingMachine
 
     public function selectItem(string $item): array
     {
+        if ($this->credit <= 0) {
+            throw new \InvalidArgumentException('You are trying to buy with incorrect credit');
+        }
+
         if (($this->stock[$item] ?? 0) <= 0) {
             return [];
         }
@@ -96,14 +100,30 @@ final class VendingMachine
         return $coins;
     }
 
-    public function setStock(string $item, int $stock): void
-    {
-        $this->stock[$item] = $stock;
-    }
-
     public function setChange(int $coin, int $amount): void
     {
+        if (!in_array($coin, [25, 10, 5], true)) {
+            throw new \InvalidArgumentException('This coin is not available');
+        }
+
+        if ($coin < 0) {
+            throw new \InvalidArgumentException('Change can\'t be negative');
+        }
+
         $this->change[$coin] = $amount;
+    }
+
+    public function setStock(string $item, int $stock): void
+    {
+        if (!isset($this->stock[$item])) {
+            throw new \InvalidArgumentException('This item not exist in this machine');
+        }
+
+        if ($stock < 0) {
+            throw new \InvalidArgumentException('Stock can\'t be negative');
+        }
+
+        $this->stock[$item] = $stock;
     }
 
     public function service(array $change, array $stock): void

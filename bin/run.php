@@ -45,80 +45,84 @@ while (true) {
 
     $response = [];
 
-    foreach ($items as $item) {
-        $item = strtoupper($item);
+    try {
+        foreach ($items as $item) {
+            $item = strtoupper($item);
 
-        if ($item === '1') {
-            $response = array_merge($response, $vendingMachine->insertCoin(100));
-            continue;
+            if ($item === '1') {
+                $response = array_merge($response, $vendingMachine->insertCoin(100));
+                continue;
+            }
+
+            if ($item === '0.25') {
+                $response = array_merge($response, $vendingMachine->insertCoin(25));
+                continue;
+            }
+
+            if ($item === '0.10') {
+                $response = array_merge($response, $vendingMachine->insertCoin(10));
+                continue;
+            }
+
+            if ($item === '0.05') {
+                $response = array_merge($response, $vendingMachine->insertCoin(5));
+                continue;
+            }
+
+            if ($item === 'RETURN-COIN') {
+                $response = array_merge($response, $vendingMachine->returnCoin());
+                continue;
+            }
+
+            if ($item === 'GET-WATER') {
+                $response = array_merge($response, $vendingMachine->selectItem('WATER'));
+                continue;
+            }
+
+            if ($item === 'GET-JUICE') {
+                $response = array_merge($response, $vendingMachine->selectItem('JUICE'));
+                continue;
+            }
+
+            if ($item === 'GET-SODA') {
+                $response = array_merge($response, $vendingMachine->selectItem('SODA'));
+                continue;
+            }
+
+            if ($item === 'SERVICE') {
+                $serviceAction = null;
+                $serviceChange = [];
+                $serviceStock = [];
+                continue;
+            }
+
+            if ($item === 'CHANGE') {
+                $serviceAction = 'change';
+                continue;
+            }
+
+            if ($item === 'STOCK') {
+                $serviceAction = 'stock';
+                continue;
+            }
+
+            if ($serviceAction === 'change' && str_contains($item, '=')) {
+                [$coin, $count] = explode('=', $item, 2);
+                $serviceChange[(int)$coin] = (int)$count;
+                continue;
+            }
+
+            if ($serviceAction === 'stock' && str_contains($item, '=')) {
+                [$item, $count] = explode('=', $item, 2);
+                $serviceStock[$item] = (int)$count;
+            }
         }
 
-        if ($item === '0.25') {
-            $response = array_merge($response, $vendingMachine->insertCoin(25));
-            continue;
+        if (!empty($serviceChange) || !empty($serviceStock)) {
+            $vendingMachine->service($serviceChange, $serviceStock);
         }
-
-        if ($item === '0.10') {
-            $response = array_merge($response, $vendingMachine->insertCoin(10));
-            continue;
-        }
-
-        if ($item === '0.05') {
-            $response = array_merge($response, $vendingMachine->insertCoin(5));
-            continue;
-        }
-
-        if ($item === 'RETURN-COIN') {
-            $response = array_merge($response, $vendingMachine->returnCoin());
-            continue;
-        }
-
-        if ($item === 'GET-WATER') {
-            $response = array_merge($response, $vendingMachine->selectItem('WATER'));
-            continue;
-        }
-
-        if ($item === 'GET-JUICE') {
-            $response = array_merge($response, $vendingMachine->selectItem('JUICE'));
-            continue;
-        }
-
-        if ($item === 'GET-SODA') {
-            $response = array_merge($response, $vendingMachine->selectItem('SODA'));
-            continue;
-        }
-
-        if ($item === 'SERVICE') {
-            $serviceAction = null;
-            $serviceChange = [];
-            $serviceStock = [];
-            continue;
-        }
-
-        if ($item === 'CHANGE') {
-            $serviceAction = 'change';
-            continue;
-        }
-
-        if ($item === 'STOCK') {
-            $serviceAction = 'stock';
-            continue;
-        }
-
-        if ($serviceAction === 'change' && str_contains($item, '=')) {
-            [$coin, $count] = explode('=', $item, 2);
-            $serviceChange[(int) $coin] = (int) $count;
-            continue;
-        }
-
-        if ($serviceAction === 'stock' && str_contains($item, '=')) {
-            [$item, $count] = explode('=', $item, 2);
-            $serviceStock[$item] = (int) $count;
-        }
-    }
-
-    if (!empty($serviceChange) || !empty($serviceStock)) {
-        $vendingMachine->service($serviceChange, $serviceStock);
+    } catch (\InvalidArgumentException $invalidArgumentException) {
+        echo 'Error: '.$invalidArgumentException->getMessage().PHP_EOL;
     }
 
     echo '-> '.implode(', ', $response).PHP_EOL;
